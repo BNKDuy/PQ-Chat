@@ -19,6 +19,7 @@ type Hub struct {
 }
 
 var errUserOffline = []byte(`{"From":"SERVER","To":"YOU","Content":"The message was not delivered (the recipient is offline)."}`)
+var errDeliveryFailed = []byte(`{"From":"SERVER","To":"YOU","Content":"The message was not delivered (the recipient cannot recieve any message now). Please try again later."}`)
 
 func NewHub() *Hub {
 	return &Hub{
@@ -46,6 +47,8 @@ func (h *Hub) Run() {
 				case packet.From.send <- errUserOffline:
 				default:
 					log.Println("Client's send channel is full, dropping error message")
+					close(packet.From.send)
+					delete(h.onlineClients, packet.From.ID)
 				}
 				continue
 			}
@@ -55,6 +58,13 @@ func (h *Hub) Run() {
 			default:
 				close(client.send)
 				delete(h.onlineClients, client.ID)
+				select {
+				case packet.From.send <- errDeliveryFailed:
+				default:
+					log.Println("Sender's send channel is full, dropping error message")
+					close(packet.From.send)
+					delete(h.onlineClients, packet.From.ID)
+				}
 			}
 		}
 	}

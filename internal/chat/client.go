@@ -67,8 +67,9 @@ func (c *Client) readPump() {
 			case c.send <- errInvalidJSON:
 			default:
 				log.Println("Client's send channel is full, dropping error message")
+				c.hub.unregisterClient <- c
 			}
-			continue
+			return
 		}
 
 		c.hub.msgBuffer <- clientToHubMessage{
