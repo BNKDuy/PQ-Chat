@@ -32,13 +32,20 @@ func main() {
 
 	// Goroutine to READ messages from the server
 	go func() {
+		var chatMsg chat.ChatMessage
 		for {
-			_, message, err := c.ReadMessage()
+			_, response, err := c.ReadMessage()
 			if err != nil {
 				log.Println("\nDisconnected from server:", err)
 				os.Exit(0)
 			}
-			fmt.Printf("%s: %s\n", targetUser, message)
+
+			if err := json.Unmarshal(response, &chatMsg); err != nil {
+				fmt.Println("Failed to receive message!")
+				continue
+			}
+
+			fmt.Printf("%s: %s\n", chatMsg.From, chatMsg.Content)
 		}
 	}()
 
