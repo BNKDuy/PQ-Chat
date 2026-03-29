@@ -1,6 +1,7 @@
 package chat
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"time"
@@ -29,6 +30,8 @@ const (
 	maxMessageSize = 3 << 10
 )
 
+var errInvalidJSON = []byte(`{"From":"SERVER","To":"YOU","Content":"Failed to send message!"}`)
+
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
@@ -48,13 +51,31 @@ func (c *Client) readPump() {
 		c.websocketConnection.SetReadDeadline(time.Now().Add(pongWait))
 		return nil
 	})
+
 	for {
+		var chatMsg ChatMessage
 		_, message, err := c.websocketConnection.ReadMessage()
 		if err != nil {
 			log.Println("Failed to read message from socket: ", err)
 			return
 		}
-		c.hub.msgBuffer <- message
+
+		if err := json.Unmarshal(message, &chatMsg); err != nil {
+			log.Println("Failed to Unmarshal JSON from ", c.ID, ": ", err)
+
+			select {
+			case c.send <- errInvalidJSON:
+			default:
+				log.Println("Client's send channel is full, dropping error message")
+			}
+			continue
+		}
+
+		c.hub.msgBuffer <- clientToHubMessage{
+			To:      chatMsg.To,
+			From:    c,
+			Message: message,
+		}
 	}
 }
 
@@ -93,7 +114,7 @@ func (c *Client) writePump() {
 		case <-ticker.C:
 			c.websocketConnection.SetWriteDeadline(time.Now().Add(writeWait))
 			if err := c.websocketConnection.WriteMessage(websocket.PingMessage, nil); err != nil {
-				log.Println("Failed to wirte ping message: ", err)
+				log.Println("Failed to write ping message: ", err)
 				return
 			}
 		}
