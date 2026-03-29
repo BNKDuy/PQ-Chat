@@ -61,7 +61,7 @@ func main() {
 			OutGoingMessage := chat.ChatMessage{
 				From:    username,
 				To:      targetUser,
-				Content: []byte(text),
+				Content: text,
 			}
 
 			msg, err := json.Marshal(OutGoingMessage)
