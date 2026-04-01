@@ -11,6 +11,7 @@ import (
 
 type Client struct {
 	ID                  string
+	Recipient           string
 	hub                 *Hub
 	websocketConnection *websocket.Conn
 	send                chan []byte
@@ -67,9 +68,9 @@ func (c *Client) readPump() {
 			case c.send <- errInvalidJSON:
 			default:
 				log.Println("Client's send channel is full, dropping error message")
-				c.hub.unregisterClient <- c
+				return
 			}
-			return
+			continue
 		}
 
 		c.hub.msgBuffer <- clientToHubMessage{
@@ -124,8 +125,14 @@ func (c *Client) writePump() {
 
 func ServeWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 	username := r.PathValue("username")
+	recipient := r.PathValue("recipient")
 
-	if username == "" {
+	if username == "" || username == "SERVER" || username == "YOU" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	if recipient == "" || recipient == "SERVER" || recipient == "YOU" {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -138,6 +145,7 @@ func ServeWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 
 	client := &Client{
 		ID:                  username,
+		Recipient:           recipient,
 		hub:                 hub,
 		websocketConnection: websocketConnection,
 		send:                make(chan []byte, 256),
