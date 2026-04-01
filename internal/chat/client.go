@@ -31,7 +31,7 @@ const (
 	maxMessageSize = 3 << 10
 )
 
-var errInvalidJSON = []byte(`{"From":"SERVER","To":"YOU","Content":"Failed to send message!"}`)
+var errInvalidJSON = []byte(`{"From":"SERVER","To":"YOU","Type":"SYSTEM","Content":"Failed to send message!"}`)
 
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
@@ -66,6 +66,17 @@ func (c *Client) readPump() {
 
 			select {
 			case c.send <- errInvalidJSON:
+			default:
+				log.Println("Client's send channel is full, dropping error message")
+				return
+			}
+			continue
+		}
+
+		// Check the message type and prevent someone send a system message
+		if !chatMsg.Type.IsValid() || chatMsg.Type == MessageTypeSystem {
+			select {
+			case c.send <- []byte(`{"From":"SERVER","To":"YOU","Type":"SYSTEM","Content":"Invalid message type!"}`):
 			default:
 				log.Println("Client's send channel is full, dropping error message")
 				return

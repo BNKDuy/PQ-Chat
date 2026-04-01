@@ -29,12 +29,11 @@ type Hub struct {
 	unregisterClient chan *Client
 }
 
-var errUserMoreThanOneConnection = []byte(`{"From":"SERVER","To":"YOU","Content":"You can only have one connection at a time"}`)
-var errUserOffline = []byte(`{"From":"SERVER","To":"YOU","Content":"The message was not delivered (the recipient is offline)."}`)
-var errDeliveryFailed = []byte(`{"From":"SERVER","To":"YOU","Content":"The message was not delivered (the recipient cannot recieve any message now). Please try again later."}`)
-var msgStartMLKEM = []byte(`{"From":"SERVER","To":"YOU","Content":"Start ML-KEM"}`)
-var msgStartEncryptedSession = []byte(`{"From":"SERVER","To":"YOU","Content":"Start encrypted session."}`)
-var msgStopEncryptedSession = []byte(`{"From":"SERVER","To":"YOU","Content":"Stop encrypted session."}`)
+var errUserMoreThanOneConnection = []byte(`{"From":"SERVER","To":"YOU","Type":"SYSTEM","Content":"You can only have one connection at a time"}`)
+var errUserOffline = []byte(`{"From":"SERVER","To":"YOU","Type":"SYSTEM","Content":"The message was not delivered (the recipient is offline)."}`)
+var errDeliveryFailed = []byte(`{"From":"SERVER","To":"YOU","Type":"SYSTEM","Content":"The message was not delivered (the recipient cannot recieve any message now). Please try again later."}`)
+var msgStartMLKEM = []byte(`{"From":"SERVER","To":"YOU","Type":"MLKEM_INIT","Content":"Start ML-KEM"}`)
+var msgStopEncryptedSession = []byte(`{"From":"SERVER","To":"YOU","Type":"STOP_ENCRYPTED_SESSION","Content":"Stop encrypted session."}`)
 
 func NewHub() *Hub {
 	return &Hub{
@@ -54,18 +53,18 @@ func (h *Hub) Run() {
 				close(oldConnection.send)
 			}
 			h.onlineClients[client.ID] = client
-			// recipient := client.Recipient
+			recipient := client.Recipient
 
-			// // If other is online, start MKLEM
-			// if peer, ok := h.onlineClients[recipient]; ok && peer.Recipient == client.ID {
-			// 	h.sendServerMessageToClient(recipient, msgStartMLKEM)
-			// }
+			// If other is online, start MKLEM
+			if peer, ok := h.onlineClients[recipient]; ok && peer.Recipient == client.ID {
+				h.sendServerMessageToClient(recipient, msgStartMLKEM)
+			}
 		case client := <-h.unregisterClient:
 			if currentCLient, ok := h.onlineClients[client.ID]; ok {
 				if client == currentCLient {
 					close(client.send)
 					delete(h.onlineClients, client.ID)
-					// h.sendServerMessageToClient(client.Recipient, msgStopEncryptedSession)
+					h.sendServerMessageToClient(client.Recipient, msgStopEncryptedSession)
 				}
 			}
 		case packet := <-h.msgBuffer:
