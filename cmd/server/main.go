@@ -20,12 +20,7 @@ func main() {
 
 	http.HandleFunc("/hi", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("hello"))
-	})
-
-	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("hi"))
+		w.Write([]byte("hi from server v1.2"))
 	})
 
 	http.ListenAndServe(":"+port, nil)
