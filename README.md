@@ -62,3 +62,7 @@ Use wss:// (WebSocket Secure) when connecting to a deployed server.
 ```bash
 ./client/build/client wss://example.com Bob Alice
 ```
+## Deployment
+- **Infrastructure**: AWS EC2
+- **Connectivity**: Cloudflare Tunnel (because EC2 has no open inbound ports)
+- **Status**: Restricted Access - **[Request Access via Email](mailto:bnkduy1@gmail.com?subject=BroChat%20Access%20Request)**
