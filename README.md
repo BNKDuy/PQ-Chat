@@ -52,7 +52,7 @@ Terminal 2 (Bob)
 ./client/build/client ws://localhost:5107 Bob Alice
 ```
 ##### Production/Deployed:
-Use wss:// (WebSocket Secure) when connecting to a deployed server.
+Use wss:// (WebSocket Secure) when connecting to a deployed server.  
 **Alice's machine:**
 ```bash
 ./client/build/client wss://example.com Alice Bob
