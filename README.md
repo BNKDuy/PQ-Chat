@@ -2,21 +2,21 @@
 A real-time chat application featuring End-to-End Encryption (E2EE) with Post-Quantum resistant algorithms.
 ## Features
 - Quantum-Resistant Security: Uses ML-KEM for key exchange, making it safe against Harvest now, decrypt later.
-- True E2EE: Encryption and decryption happen strictly on your machine. The server is "blind", it only passes encrypted blobs around without ever seeing your actual text.
+- True E2EE: Encryption and decryption happen strictly on your machine. The server is "blind", it only passes encrypted blobs around without ever seeing your actual text. 
 - Snappy Real-time Messaging: Built on WebSockets for instant delivery.
 ---
 ## Tech Stack
 ### Client
-- Language: Go (Golang)
-- UI Framework: Fyne
+- **Language**: Go (Golang)
+- **UI Framework**: Fyne
 ### Backend
-- Language: C#
-- Framework: ASP .NET Core
+- **Language**: C#
+- **Framework**: ASP .NET Core
 ---
 ## Installation & Setup
 ### 1. Prerequisites
-- Go (1.25+ recommended)
-- .NET SDK (latest LTS)
+- **Go** (1.25+ recommended)
+- **.NET SDK** (latest LTS)
 
 ### 2. Server Setup
 ```bash
