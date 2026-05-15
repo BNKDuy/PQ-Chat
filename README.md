@@ -38,7 +38,7 @@ go build -o ./build/client ./cmd/client
 #### Usage
 From the client directory:
 ```bash
-./build/client <server_url> <your_username> <recipient_username>
+./client <server_url> <your_username> <recipient_username>
 ```
 #### Example
 Alice wants to talk to Bob.
@@ -46,21 +46,21 @@ Alice wants to talk to Bob.
 ##### Local Testing:
 Terminal 1 (Alice)
 ```bash
-./client/build/client ws://localhost:5107 Alice Bob
+./build/client ws://localhost:5107 Alice Bob
 ```
 Terminal 2 (Bob)
 ```bash
-./client/build/client ws://localhost:5107 Bob Alice
+./build/client ws://localhost:5107 Bob Alice
 ```
 ##### Production/Deployed:
 Use wss:// (WebSocket Secure) when connecting to a deployed server.  
 **Alice's machine:**
 ```bash
-./client/build/client wss://example.com Alice Bob
+./build/client wss://example.com Alice Bob
 ```
 **Bob's machine:**
 ```bash
-./client/build/client wss://example.com Bob Alice
+./build/client wss://example.com Bob Alice
 ```
 ## Deployment
 - **Infrastructure**: AWS EC2
