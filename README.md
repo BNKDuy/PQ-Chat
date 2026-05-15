@@ -4,7 +4,7 @@ A real-time chat application featuring End-to-End Encryption (E2EE) with Post-Qu
 - Quantum-Resistant Security: Uses ML-KEM for key exchange, making it safe against Harvest now, decrypt later.
 - True E2EE: Encryption and decryption happen strictly on your machine. The server is "blind", it only passes encrypted blobs around without ever seeing your actual text.
 - Snappy Real-time Messaging: Built on WebSockets for instant delivery.
-
+---
 ## Tech Stack
 ### Client
 - Language: Go (Golang)
@@ -12,7 +12,7 @@ A real-time chat application featuring End-to-End Encryption (E2EE) with Post-Qu
 ### Backend
 - Language: C#
 - Framework: ASP .NET Core
-
+---
 ## Installation & Setup
 ### 1. Prerequisites
 - Go (1.25+ recommended)
