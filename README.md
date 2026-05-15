@@ -1,9 +1,10 @@
 # BroChat
 A real-time chat application featuring End-to-End Encryption (E2EE) with Post-Quantum resistant algorithms.
 ## Features
-- Quantum-Resistant Security: Uses ML-KEM for key exchange, making it safe against Harvest now, decrypt later.
-- True E2EE: Encryption and decryption happen strictly on your machine. The server is "blind", it only passes encrypted blobs around without ever seeing your actual text. 
-- Snappy Real-time Messaging: Built on WebSockets for instant delivery.
+- **Quantum-Resistant Security**: Uses **ML-KEM** for key exchange, making it safe against Harvest now, decrypt later.
+- **Authenticated Encryption**: Messages are secured using **ChaCha20-Poly1305**, providing high-speed symmetric encryption, and built-in integrity checking to prevent message tampering.
+- **True E2EE**: Encryption and decryption happen strictly on your machine. The server is "blind", it only passes encrypted blobs around without ever seeing your actual text. 
+- **Snappy Real-time Messaging**: Built on WebSockets for instant delivery.
 ---
 ## Tech Stack
 ### Client
