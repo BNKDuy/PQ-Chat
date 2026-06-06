@@ -21,7 +21,7 @@ A real-time chat application featuring End-to-End Encryption (E2EE) with Post-Qu
 ```bash
 go mod tidy
 ```
-The server starts on port 5107.
+The server starts on port 8080.
 
 ### 3. Client Setup
 ```bash
@@ -40,11 +40,11 @@ Alice wants to talk to Bob.
 ##### Local Testing:
 Terminal 1 (Alice)
 ```bash
-./build/client ws://localhost:5107 Alice Bob
+./build/client ws://localhost:8080 Alice Bob
 ```
 Terminal 2 (Bob)
 ```bash
-./build/client ws://localhost:5107 Bob Alice
+./build/client ws://localhost:8080 Bob Alice
 ```
 ##### Production/Deployed:
 Use wss:// (WebSocket Secure) when connecting to a deployed server.  
