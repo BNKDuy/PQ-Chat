@@ -11,7 +11,7 @@ func main() {
 	username := os.Args[2]
 	recipient := os.Args[3]
 
-	url := host + "/ws?id=" + username + "&recipient=" + recipient
+	url := host + "/ws/" + username + "/" + recipient
 
 	app := clientapp.NewChatClient(url, username, recipient)
 	app.Start()
