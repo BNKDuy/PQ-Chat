@@ -11,26 +11,20 @@ A real-time chat application featuring End-to-End Encryption (E2EE) with Post-Qu
 - **Language**: Go (Golang)
 - **UI Framework**: Fyne
 ### Backend
-- **Language**: C#
-- **Framework**: ASP .NET Core
+- **Language**: Go (Golang)
 ---
 ## Installation & Setup
 ### 1. Prerequisites
-- **Go** (1.25+ recommended)
-- **.NET SDK** (latest LTS)
+- **Go** (1.26+ recommended)
 
 ### 2. Server Setup
 ```bash
-cd backend/BroChatServer
-dotnet restore
-dotnet run
+go mod tidy
 ```
 The server starts on port 5107.
 
 ### 3. Client Setup
 ```bash
-cd client
-go mod tidy
 go build -o ./build/client ./cmd/client
 ```
 

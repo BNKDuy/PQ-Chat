@@ -2,3 +2,4 @@
 build
 stable_build
 Makefile
+.DS_Store
