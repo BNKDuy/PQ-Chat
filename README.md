@@ -20,6 +20,7 @@ A real-time chat application featuring End-to-End Encryption (E2EE) with Post-Qu
 ### 2. Server Setup
 ```bash
 go mod tidy
+go build -o ./build/server ./cmd/server
 ```
 The server starts on port 8080.
 
